@@ -4,6 +4,9 @@
  */
 package guimenuk;
 
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author KisváradiMárton(Szf_
@@ -32,9 +35,14 @@ public class menukGUI extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        mnuQuit = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jMenu1.setText("Program");
 
@@ -42,12 +50,22 @@ public class menukGUI extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
         jMenu1.add(jSeparator1);
 
-        jMenuItem2.setText("Mentés");
+        jMenuItem2.setText("Mentés...");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
         jMenu1.add(jSeparator2);
 
-        jMenuItem3.setText("Kilépés");
-        jMenu1.add(jMenuItem3);
+        mnuQuit.setText("Kilépés");
+        mnuQuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuQuitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuQuit);
 
         jMenuBar1.add(jMenu1);
 
@@ -67,6 +85,34 @@ public class menukGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mnuQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuQuitActionPerformed
+        quit(); 
+        
+    }//GEN-LAST:event_mnuQuitActionPerformed
+
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        quit();
+//        JOptionPane.showMessageDialog(rootPane, msg, title, msgType);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        Files.
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void quit() throws HeadlessException {
+        String msg = "Biztosan kilép?";
+        String title = "Kilépés";
+        int msgType = JOptionPane.QUESTION_MESSAGE;
+        int optType = JOptionPane.YES_NO_OPTION;
+//        JOptionPane.showMessageDialog(rootPane, msg, title, msgType);
+        int answear = JOptionPane.showConfirmDialog(this, msg, title, optType);
+
+        if(answear == JOptionPane.YES_OPTION) {
+            int hibaKod = 0;
+            System.exit(hibaKod);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -107,8 +153,8 @@ public class menukGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenuItem mnuQuit;
     // End of variables declaration//GEN-END:variables
 }
