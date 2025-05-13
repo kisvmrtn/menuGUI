@@ -5,6 +5,13 @@
 package guimenuk;
 
 import java.awt.HeadlessException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,11 +36,16 @@ public class menukGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        nevTxtField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        szakValasztoComboBox = new javax.swing.JComboBox<>();
+        hirlevelChckBox = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mnuSave = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         mnuQuit = new javax.swing.JMenuItem();
 
@@ -44,19 +56,27 @@ public class menukGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Név:");
+
+        jLabel2.setText("Szak:");
+
+        szakValasztoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Szak választása", "Szoftverfejlesztő- és tesztelő", "Rendszergazda", "Utca Seprő" }));
+
+        hirlevelChckBox.setText("Hírlevél");
+
         jMenu1.setText("Program");
 
         jMenuItem1.setText("Betöltés");
         jMenu1.add(jMenuItem1);
         jMenu1.add(jSeparator1);
 
-        jMenuItem2.setText("Mentés...");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        mnuSave.setText("Mentés...");
+        mnuSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                mnuSaveActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(mnuSave);
         jMenu1.add(jSeparator2);
 
         mnuQuit.setText("Kilépés");
@@ -75,11 +95,34 @@ public class menukGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(12, 12, 12)
+                        .addComponent(nevTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(szakValasztoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(hirlevelChckBox)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nevTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(szakValasztoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hirlevelChckBox))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -96,9 +139,35 @@ public class menukGUI extends javax.swing.JFrame {
 //        JOptionPane.showMessageDialog(rootPane, msg, title, msgType);
     }//GEN-LAST:event_formWindowClosing
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        Files.
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void mnuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveActionPerformed
+          Object[] options = {szakValasztoComboBox.getItemAt(1), szakValasztoComboBox.getItemAt(2), szakValasztoComboBox.getItemAt(3)};
+          if(szakValasztoComboBox.getSelectedItem() == "Szak választása") {
+              int option = JOptionPane.showOptionDialog(null, "Válassz egy szakot:", "Hiba!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[0]);
+              System.out.println(option);
+              szakValasztoComboBox.setSelectedIndex(option+1);
+          }
+          
+          JFileChooser jfc = new JFileChooser(System.getProperty("user.dir")); //Aktualis projekt
+          int answear = jfc.showSaveDialog(this);
+          System.out.println(answear);
+   
+          
+          if(answear == JFileChooser.APPROVE_OPTION) {
+//              System.out.println(jfc.getSelectedFile());
+              File kivalasztottFajl = jfc.getSelectedFile();
+              Path path = Path.of(kivalasztottFajl.getAbsolutePath());
+              try {
+                  Files.writeString(path, tartalom());
+              } catch (IOException ex) {
+                  JOptionPane.showMessageDialog(rootPane, "JO hiba!\n" + ex.getMessage());
+                  Logger.getLogger(menukGUI.class.getName()).log(Level.SEVERE, null, ex);
+              }
+          };
+    }//GEN-LAST:event_mnuSaveActionPerformed
+
+    private String tartalom() {
+        return "Név: " + nevTxtField.getText() + "\nSzak: " + szakValasztoComboBox.getSelectedItem() + "\nHírlevél feliratkozás: " + hirlevelChckBox.isSelected();
+    }
 
     private void quit() throws HeadlessException {
         String msg = "Biztosan kilép?";
@@ -149,12 +218,17 @@ public class menukGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox hirlevelChckBox;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenuItem mnuQuit;
+    private javax.swing.JMenuItem mnuSave;
+    private javax.swing.JTextField nevTxtField;
+    private javax.swing.JComboBox<String> szakValasztoComboBox;
     // End of variables declaration//GEN-END:variables
 }
