@@ -67,6 +67,11 @@ public class menukGUI extends javax.swing.JFrame {
         jMenu1.setText("Program");
 
         jMenuItem1.setText("Betöltés");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
         jMenu1.add(jSeparator1);
 
@@ -143,7 +148,7 @@ public class menukGUI extends javax.swing.JFrame {
           Object[] options = {szakValasztoComboBox.getItemAt(1), szakValasztoComboBox.getItemAt(2), szakValasztoComboBox.getItemAt(3)};
           if(szakValasztoComboBox.getSelectedItem() == "Szak választása") {
               int option = JOptionPane.showOptionDialog(null, "Válassz egy szakot:", "Hiba!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,options[0]);
-              System.out.println(option);
+              //System.out.println(option);
               szakValasztoComboBox.setSelectedIndex(option+1);
           }
           
@@ -164,6 +169,34 @@ public class menukGUI extends javax.swing.JFrame {
               }
           };
     }//GEN-LAST:event_mnuSaveActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+        int answear = jfc.showSaveDialog(this);
+        System.out.println(answear);
+        
+        if(answear == JFileChooser.APPROVE_OPTION) {
+            File kivalasztottFile = jfc.getSelectedFile();
+            Path path = Path.of(kivalasztottFile.getAbsolutePath());
+            try {
+                String szoveg = Files.readString(path);
+                String[] sorok = szoveg.split("\n");
+                String nev = sorok[0].split(" ")[1];
+                String szak = sorok[1].split(":")[1].trim();
+                
+                
+                System.out.println(nev);
+                nevTxtField.setText(nev);
+                
+                System.out.println(szak);
+                szakValasztoComboBox.setSelectedItem(szak);
+                
+                //hirlevelChckBox.setSelected();
+            } catch (IOException ex) {
+                Logger.getLogger(menukGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private String tartalom() {
         return "Név: " + nevTxtField.getText() + "\nSzak: " + szakValasztoComboBox.getSelectedItem() + "\nHírlevél feliratkozás: " + hirlevelChckBox.isSelected();
